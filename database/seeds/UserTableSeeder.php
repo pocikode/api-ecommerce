@@ -30,14 +30,5 @@ class UserTableSeeder extends Seeder
             'password'  => Hash::make('12345'),
             'photo'     => url('images/default-user-photo.png')
         ]);
-
-        // Yusup
-        DB::table('users')->insert([
-            'name'      => 'Yusup Almaududi',
-            'username'  => 'yusup',
-            'email'     => 'yusup@gmail.com',
-            'password'  => Hash::make('12345'),
-            'photo'     => url('images/default-user-photo.png')
-        ]);
     }
 }
