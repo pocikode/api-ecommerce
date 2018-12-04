@@ -19,17 +19,15 @@ class CreateProductsTable extends Migration
             $table->string('name', 255);
             $table->unsignedInteger('category_id');
             $table->unsignedInteger('sub_category_id');
-            $table->unsignedInteger('brand_id');
-            $table->integer('point');
+            $table->unsignedInteger('brand_id')->nullable();
+            $table->integer('point')->default(0);
             $table->integer('price');
             $table->integer('weight');
-            $table->string('image1');
-            $table->string('image2')->nullable();
-            $table->string('image3')->nullable();
+            $table->string('image');
             $table->text('description');
-            $table->integer('sold');
-            $table->integer('hit_views');
-            $table->boolean('status');
+            $table->integer('sold')->default(0);
+            $table->integer('hit_views')->default(0);
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }

@@ -23,8 +23,8 @@ class CreateCustomersTable extends Migration
             $table->string('phone')->unique();
             $table->string('email')->unique();
             $table->string('password', 255);
-            $table->string('photo', 255)->nullable();
-            $table->integer('point')->nullable();
+            $table->string('photo', 255)->default(url('images/default-user-photo.png'));
+            $table->integer('point')->default(0);
             $table->timestamps();
         });
     }

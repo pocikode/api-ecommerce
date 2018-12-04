@@ -17,19 +17,16 @@ class AddRelationInProductsTable extends Migration
             $table->foreign('category_id')
                   ->references('category_id')
                   ->on('categories')
-                  ->onDelete('cascade')
                   ->onUpdate('cascade');
             
             $table->foreign('sub_category_id')
                   ->references('sub_category_id')
                   ->on('sub_categories')
-                  ->onDelete('cascade')
                   ->onUpdate('cascade');
 
             $table->foreign('brand_id')
                   ->references('brand_id')
                   ->on('brands')
-                  ->onDelete('cascade')
                   ->onUpdate('cascade');
         });
     }
