@@ -53,7 +53,7 @@ $router->delete('brand/{id}', 'BrandController@delete');
 /* Product Route */
 $router->get('product', 'ProductController@index');
 $router->get('product/{id}', 'ProductController@show');
-$router->get('product/?category={idCategory}&subcategory={?idSub}', 'ProductController@sort');
+$router->get('product/category/{idCategory}', 'ProductController@sort');
 $router->post('product', 'ProductController@create');
 $router->put('product/{id}', 'ProductController@update');
 $router->delete('product/{id}', 'ProductController@delete');

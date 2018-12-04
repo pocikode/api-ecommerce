@@ -38,10 +38,18 @@ class ProductController extends Controller
         return response()->json($product);
     }
 
-    # show product by category
-    public function showByCategory(Request $req, $catID = null)
+    # show product, sort by category and sub category
+    public function sort(Request $req, int $idCategory, int $idSub = null)
     {
-        
+        $idSub = $req->get('idSub') ?? null;
+
+        if (!$idSub) {
+            $products = Product::where('category_id', $idCategory)->get()->all();
+            return response()->json($products);
+        } else {
+            $products = Product::where('category_id', $idCategory)->where('sub_category_id', $idSub)->get()->all();
+            return response()->json($products);
+        }
     }
 
     # create product
@@ -50,21 +58,14 @@ class ProductController extends Controller
         $this->validateForm($req);
 
         $data = Product::create([
-            'code' => $req->code,
-            'name' => $req->name,
+            'code'  => $req->code,
+            'name'  => $req->name,
             'category_id' => $req->category_id,
             'sub_category_id' => $req->sub_category_id,
-            'brand_id'  => $req->brand_id,
-            'point'     => $req->point,
-            'price'     => $req->price,
-            'weight'    => $req->weight,
-            'image1'    => $req->image1,
-            'image2'    => $req->image2,
-            'image3'    => $req->image3,
+            'price' => $req->price,
+            'weight'=> $req->weight,
+            'image' => $req->image,
             'description' => $req->description,
-            'status'    => 1,
-            'sold'      => 0,
-            'hit_views' => 0
         ]);
 
         return response()->json([
@@ -120,13 +121,11 @@ class ProductController extends Controller
             'name' => 'required|max:100',
             'category_id' => 'integer|required',
             'sub_category_id' => 'integer|required',
-            'brand_id' => 'integer|required',
-            'point' => 'integer|required',
+            // 'brand_id' => 'integer|required',
+            // 'point' => 'integer|required',
             'price' => 'integer|required',
             'weight'=> 'integer|required',
-            'image1'=> 'string|required',
-            'image2'=> 'string',
-            'image3'=> 'string',
+            'image'=> 'string|required',
             'description' => 'required'
         ]);
     }
