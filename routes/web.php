@@ -20,12 +20,13 @@ $router->get('/', function () use ($router) {
 /* ADMIN PREFIX ROUTE */
 $router->group(['prefix' => 'admin'], function () use ($router) {
     $router->post('login', 'Admin\AuthController@auth');
-    $router->get('profile', 'Admin\AuthController@profile');
+    $router->get('profile', 'Admin\AuthController@profile'); # TODO: TEST ONLY
 });
 
 /* Customer AUth */
 $router->post('register', 'Customer\AuthController@register');
 $router->post('login', 'Customer\AuthController@login');
+$router->get('profile', 'Customer\AuthController@profile'); # FIXME: TEST ONLY
 
 /* Category Route */
 $router->get('category', 'CategoryController@index');
@@ -52,6 +53,7 @@ $router->delete('brand/{id}', 'BrandController@delete');
 /* Product Route */
 $router->get('product', 'ProductController@index');
 $router->get('product/{id}', 'ProductController@show');
+$router->get('product/?category={idCategory}&subcategory={?idSub}', 'ProductController@sort');
 $router->post('product', 'ProductController@create');
 $router->put('product/{id}', 'ProductController@update');
 $router->delete('product/{id}', 'ProductController@delete');

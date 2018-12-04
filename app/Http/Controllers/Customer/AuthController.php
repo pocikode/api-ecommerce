@@ -20,7 +20,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        //
+        $this->middleware('jwt.customer', ['only' => ['profile']]);
     }
 
     # create jwt token
@@ -96,5 +96,15 @@ class AuthController extends Controller
                 'message' => 'Wrong password!',
             ], 401);
         }
+    }
+
+    /**
+     * @param TestOnly
+     * @param ShowCustomerProfile
+     */
+    public function profile(Request $req)
+    {
+        $customer = $req->user;
+        return response()->json(['data' => $customer]);
     }
 }
