@@ -25,6 +25,7 @@ $router->group(['prefix' => 'admin'], function () use ($router) {
 
 /* Customer AUth */
 $router->post('register', 'Customer\AuthController@register');
+$router->post('login', 'Customer\AuthController@login');
 
 /* Category Route */
 $router->get('category', 'CategoryController@index');
