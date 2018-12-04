@@ -71,7 +71,7 @@ class SubCategoryController extends Controller
         $subCategory = SubCategory::create([
             'category_id'   => $req->category_id,
             'name'  => $req->name,
-            'icon'  => $req->icon
+            'icon'  => 'null'
         ]);
 
         return response()->json([
@@ -123,7 +123,7 @@ class SubCategoryController extends Controller
         $this->validate($req, [
             'name' => 'required',
             'category_id' => 'required',
-            'icon' => 'required'
+            // 'icon' => 'required'
         ]);
     }
 
