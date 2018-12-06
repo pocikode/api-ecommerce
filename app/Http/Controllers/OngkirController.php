@@ -57,11 +57,16 @@ class OngkirController extends Controller
 
     public function cost(Request $req)
     {
+        $origin     = $req->get('origin'); # origin city
+        $destination= $req->get('destination'); # destination city
+        $weight     = $req->get('weight'); # wight in gram
+        $courier    = $req->get('courier'); # courier
+
         $cost = $this->rajaOngkir->getCost(
-            ['city' => $req->get('origin')], # origin city
-            ['city' => $req->get('destination')], # destination city
-            $req->get('weight'), # wight in gram
-            $req->get('courier') # courier
+            ['city' => $origin], # origin city
+            ['city' => $destination], # destination city
+            $weight, # wight in gram
+            $courier # courier
         );
 
         return response()->json($cost);
