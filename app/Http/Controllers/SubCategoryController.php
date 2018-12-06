@@ -40,24 +40,26 @@ class SubCategoryController extends Controller
     }
 
     # show sub category by category id
-    public function showCategory(Request $req, $catID = null)
+    public function showCategory($catId)
     {
-        $catID = $req->get('catId');
-        $subCategory = Category::where('category_id', $catID)->get()->all();
+        $subCategory = SubCategory::where('category_id', $catId)->get()->all();
         if (!$subCategory) {
             return response()->json([
                 'success' => false,
-                'message' => 'Data Not FOund!'
-            ], 404);
+                'message' => 'No Data, add subcategory first!'
+            ], 200);
         }
 
-        return response()->json($catID);
+        return response()->json($subCategory);
     }
 
     # store sub category
     public function create(Request $req)
     {
-        $this->validateData($req); # validate form data
+        $this->validate($req, [
+            'name' => 'required',
+            'category_id' => 'required',
+        ]);
 
         # validate category
         if (!$this->checkCategory($req->category_id)) {
@@ -84,15 +86,9 @@ class SubCategoryController extends Controller
     # update sub category
     public function update(Request $req, $id)
     {
-        $this->validateData($req); # validate form data
-
-        # validate category
-        if (!$this->checkCategory($req->category_id)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Category Not Found!'
-            ], 400);
-        }
+        $this->validate($req, [
+            'name' => 'required',
+        ]);
 
         # check if sub category exists
         $subCategory = SubCategory::find($id);
@@ -115,16 +111,6 @@ class SubCategoryController extends Controller
 
         $subCategory->delete();
         return response()->json(['success' => true, 'message' => 'Data Deleted!']);
-    }
-
-    # validate form data
-    private function validateData(Request $req)
-    {
-        $this->validate($req, [
-            'name' => 'required',
-            'category_id' => 'required',
-            // 'icon' => 'required'
-        ]);
     }
 
     # CHECK CATEGORY
