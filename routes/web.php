@@ -55,8 +55,15 @@ $router->delete('brand/{id}', 'BrandController@delete');
 /* Product Route */
 $router->get('product', 'ProductController@index');
 $router->get('product/{id}', 'ProductController@show');
-$router->get('product/category/{idCategory}', 'ProductController@sort');
+$router->get('product/category/{idCategory}', 'ProductController@sort'); 
+# to sort with sub category, add idSub parameter, ex : http://{api_url}/product/category/{idCategory}?idSub={idSub}
 $router->post('product', 'ProductController@create');
 $router->put('product/{id}', 'ProductController@update');
 $router->delete('product/{id}', 'ProductController@delete');
-/* FIXME: TEST ONLY */ $router->post('testStock', 'ProductController@stockTest');
+
+/**
+ * Province, City and Onkir
+ */
+$router->get('province', 'OngkirController@province');
+$router->get('city', 'OngkirController@city');
+$router->get('ongkir', 'OngkirController@cost');
