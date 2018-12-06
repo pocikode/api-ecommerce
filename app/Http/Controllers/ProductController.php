@@ -14,14 +14,25 @@ class ProductController extends Controller
      */
     public function __construct()
     {
-        //
+        $this->middleware('jwt.admin', ['only' => ['create', 'update', 'delete']]);
     }
 
     # show all product
     public function index()
     {
-        $products = Product::all();
-        return response()->json($products);
+        $products = Product::where('status', true)->get()->all();
+
+        $dummyProd = [];
+        foreach ($products as $product) {
+            $product->sizes = json_decode($product->sizes);
+            $dummyProd[] = $product;
+        }
+
+        return response()->json($dummyProd);
+
+        // return response()->json($products->transform(function ($item, $key) {
+        //     return json_decode($item->sizes);
+        // }));
     }
 
     #show product info
@@ -57,6 +68,9 @@ class ProductController extends Controller
     {
         $this->validateForm($req);
 
+        $imageName = date('Ymd') . str_random(6) . '.' . $req->image->getClientOriginalExtension();
+        $req->image->move('./images/products/', $imageName);
+
         $data = Product::create([
             'code'  => $req->code,
             'name'  => $req->name,
@@ -64,9 +78,12 @@ class ProductController extends Controller
             'sub_category_id' => $req->sub_category_id,
             'price' => $req->price,
             'weight'=> $req->weight,
-            'image' => $req->image,
+            'image' => url('images/products/' . $imageName),
             'description' => $req->description,
+            'sizes' => $this->createSizes($req->size, $req->stock),
         ]);
+
+        $data->sizes = json_decode($data->sizes);
 
         return response()->json([
             'success' => true,
@@ -121,12 +138,24 @@ class ProductController extends Controller
             'name' => 'required|max:100',
             'category_id' => 'integer|required',
             'sub_category_id' => 'integer|required',
-            // 'brand_id' => 'integer|required',
-            // 'point' => 'integer|required',
             'price' => 'integer|required',
             'weight'=> 'integer|required',
-            'image'=> 'string|required',
-            'description' => 'required'
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:512',
+            'description' => 'required',
+            'size'  => 'required|array',
+            'stock' => 'required|array',
         ]);
+    }
+
+    # create sizes from size and stock
+    private function createSizes(array $size, array $stock)
+    {
+        $sizes = [];
+
+        for ($i = 0; $i < min(count($size), count($stock)); $i++) {
+            $sizes[$size[$i]] = $stock[$i];
+        }
+
+        return json_encode($sizes, JSON_UNESCAPED_SLASHES);
     }
 }

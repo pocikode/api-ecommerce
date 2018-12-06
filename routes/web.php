@@ -28,6 +28,8 @@ $router->post('register', 'Customer\AuthController@register');
 $router->post('login', 'Customer\AuthController@login');
 $router->get('profile', 'Customer\AuthController@profile'); # FIXME: TEST ONLY
 
+$router->get('customers', 'Admin\CustomerController@index'); # ADMIN ONLY
+
 /* Category Route */
 $router->get('category', 'CategoryController@index');
 $router->get('category/{id}', 'CategoryController@show');
@@ -37,7 +39,7 @@ $router->delete('category/{id}', 'CategoryController@delete');
 
 /* Sub Category Route */
 $router->get('subcategory', 'SubCategoryController@index');
-$router->get('subcategory/catId={id}', 'SubCategoryController@showCategory');
+$router->get('subcategory/category/{id}', 'SubCategoryController@showCategory');
 $router->get('subcategory/{id}', 'SubCategoryController@show');
 $router->post('subcategory', 'SubCategoryController@create');
 $router->put('subcategory/{id}', 'SubCategoryController@update');
@@ -57,3 +59,4 @@ $router->get('product/category/{idCategory}', 'ProductController@sort');
 $router->post('product', 'ProductController@create');
 $router->put('product/{id}', 'ProductController@update');
 $router->delete('product/{id}', 'ProductController@delete');
+/* FIXME: TEST ONLY */ $router->post('testStock', 'ProductController@stockTest');
