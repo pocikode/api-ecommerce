@@ -29,10 +29,6 @@ class ProductController extends Controller
         }
 
         return response()->json($dummyProd);
-
-        // return response()->json($products->transform(function ($item, $key) {
-        //     return json_decode($item->sizes);
-        // }));
     }
 
     #show product info
@@ -46,21 +42,29 @@ class ProductController extends Controller
             ], 404);
         }
 
+        $product->sizes = json_decode($product->sizes);
+
         return response()->json($product);
     }
 
     # show product, sort by category and sub category
-    public function sort(Request $req, int $idCategory, int $idSub = null)
+    public function sort(Request $req, int $idCategory)
     {
         $idSub = $req->get('idSub') ?? null;
 
         if (!$idSub) {
             $products = Product::where('category_id', $idCategory)->get()->all();
-            return response()->json($products);
         } else {
             $products = Product::where('category_id', $idCategory)->where('sub_category_id', $idSub)->get()->all();
-            return response()->json($products);
         }
+
+        $dummyProd = [];
+        foreach ($products as $product) {
+            $product->sizes = json_decode($product->sizes);
+            $dummyProd[] = $product;
+        }
+
+        return response()->json($dummyProd);
     }
 
     # create product
