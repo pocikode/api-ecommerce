@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call('CustomersTableSeeder');
         $this->call('ProvincesAndCitiesSeeder');
         $this->call('CouriersTableSeeder');
+        $this->call('BanksTableSeeder');
     }
 }

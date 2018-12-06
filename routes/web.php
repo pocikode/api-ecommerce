@@ -74,3 +74,10 @@ $router->get('courier/{id}', 'CourierController@show');
 $router->post('courier', 'CourierController@create');
 $router->put('courier/{id}', 'CourierController@update');
 $router->delete('courier/{id}', 'CourierController@delete');
+
+/* Bank */
+$router->get('bank', 'BankController@index');
+$router->get('bank/{id}', 'BankController@show');
+$router->post('bank', 'BankController@create');
+$router->put('bank/{id}', 'BankController@update');
+$router->delete('bank/{id}', 'BankController@delete');
