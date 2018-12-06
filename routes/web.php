@@ -67,3 +67,10 @@ $router->delete('product/{id}', 'ProductController@delete');
 $router->get('province', 'OngkirController@province');
 $router->get('city', 'OngkirController@city');
 $router->get('ongkir', 'OngkirController@cost');
+
+/* Courier */
+$router->get('courier', 'CourierController@index');
+$router->get('courier/{id}', 'CourierController@show');
+$router->post('courier', 'CourierController@create');
+$router->put('courier/{id}', 'CourierController@update');
+$router->delete('courier/{id}', 'CourierController@delete');
