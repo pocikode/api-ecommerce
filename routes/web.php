@@ -1,31 +1,23 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It is a breeze. Simply tell Lumen the URIs it should respond to
-| and give it the Closure to call when that URI is requested.
-|
-*/
-
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-/* ADMIN PREFIX ROUTE */
+/* Admin Login, Profile */
 $router->group(['prefix' => 'admin'], function () use ($router) {
     $router->post('login', 'Admin\AuthController@auth');
     $router->get('profile', 'Admin\ProfileController@show');
-    $router->put('profile/update', 'Admin\ProfileController@update');
+    $router->put('profile', 'Admin\ProfileController@update');
 });
 
-/* Customer AUth */
+/**
+ * Customer Login, Register, Profile 
+ */
 $router->post('register', 'Customer\AuthController@register');
 $router->post('login', 'Customer\AuthController@login');
-$router->get('profile', 'Customer\AuthController@profile'); # FIXME: TEST ONLY
+$router->get('profile', 'Customer\ProfileController@show');
+$router->put('profile', 'Customer\ProfileController@update');
 
 $router->get('customers', 'Admin\CustomerController@index'); # ADMIN ONLY
 

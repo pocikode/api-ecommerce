@@ -97,14 +97,4 @@ class AuthController extends Controller
             ], 401);
         }
     }
-
-    /**
-     * @param TestOnly
-     * @param ShowCustomerProfile
-     */
-    public function profile(Request $req)
-    {
-        $customer = $req->user;
-        return response()->json(['data' => $customer]);
-    }
 }
