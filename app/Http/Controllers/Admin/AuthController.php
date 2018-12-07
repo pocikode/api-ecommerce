@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Firebase\JWT\JWT;
@@ -53,13 +53,5 @@ class AuthController extends Controller
         } else {
             return response()->json(['error' => 'Wrong Password!'], 401);
         }
-    }
-
-    public function profile(Request $req)
-    {
-        return response()->json([
-            'success'   => true,
-            'data'      => $req->user
-        ]);
     }
 }

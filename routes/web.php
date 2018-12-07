@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -20,7 +18,8 @@ $router->get('/', function () use ($router) {
 /* ADMIN PREFIX ROUTE */
 $router->group(['prefix' => 'admin'], function () use ($router) {
     $router->post('login', 'Admin\AuthController@auth');
-    $router->get('profile', 'Admin\AuthController@profile'); # TODO: TEST ONLY
+    $router->get('profile', 'Admin\ProfileController@show');
+    $router->put('profile/update', 'Admin\ProfileController@update');
 });
 
 /* Customer AUth */

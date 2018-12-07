@@ -6,7 +6,7 @@ use Closure;
 use Firebase\JWT\JWT;
 use Firebase\JWT\ExpiredException;
 use PHPUnit\Framework\Constraint\Exception;
-use App\User;
+use App\Models\User;
 
 class UserAuthJwtMiddleware
 {
