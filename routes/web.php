@@ -30,14 +30,18 @@ $router->get('profile', 'Customer\AuthController@profile'); # FIXME: TEST ONLY
 
 $router->get('customers', 'Admin\CustomerController@index'); # ADMIN ONLY
 
-/* Category Route */
+/**
+ *  Category Route 
+ */
 $router->get('category', 'CategoryController@index');
 $router->get('category/{id}', 'CategoryController@show');
 $router->post('category', 'CategoryController@create');
 $router->put('category/{id}', 'CategoryController@update');
 $router->delete('category/{id}', 'CategoryController@delete');
 
-/* Sub Category Route */
+/**
+ *  Sub Category Route 
+ */
 $router->get('subcategory', 'SubCategoryController@index');
 $router->get('subcategory/category/{id}', 'SubCategoryController@showCategory');
 $router->get('subcategory/{id}', 'SubCategoryController@show');
@@ -45,14 +49,18 @@ $router->post('subcategory', 'SubCategoryController@create');
 $router->put('subcategory/{id}', 'SubCategoryController@update');
 $router->delete('subcategory/{id}', 'SubCategoryController@delete');
 
-/* Brand Route */
+/**
+ *  Brand Route
+ */
 $router->get('brand', 'BrandController@index');
 $router->get('brand/{id}', 'BrandController@show');
 $router->post('brand', 'BrandController@create');
 $router->put('brand/{id}', 'BrandController@update');
 $router->delete('brand/{id}', 'BrandController@delete');
 
-/* Product Route */
+/**
+ *  Product Route 
+ */
 $router->get('product', 'ProductController@index');
 $router->get('product/{id}', 'ProductController@show');
 $router->get('product/category/{idCategory}', 'ProductController@sort'); 
@@ -60,6 +68,7 @@ $router->get('product/category/{idCategory}', 'ProductController@sort');
 $router->post('product', 'ProductController@create');
 $router->put('product/{id}', 'ProductController@update');
 $router->delete('product/{id}', 'ProductController@delete');
+$router->post('product/upload-image', 'ProductController@uploadImage');
 
 /**
  * Province, City and Onkir
@@ -68,14 +77,18 @@ $router->get('province', 'OngkirController@province');
 $router->get('city', 'OngkirController@city');
 $router->get('ongkir', 'OngkirController@cost');
 
-/* Courier */
+/**
+ *  Courier 
+ */
 $router->get('courier', 'CourierController@index');
 $router->get('courier/{id}', 'CourierController@show');
 $router->post('courier', 'CourierController@create');
 $router->put('courier/{id}', 'CourierController@update');
 $router->delete('courier/{id}', 'CourierController@delete');
 
-/* Bank */
+/**
+ *  Bank 
+ */
 $router->get('bank', 'BankController@index');
 $router->get('bank/{id}', 'BankController@show');
 $router->post('bank', 'BankController@create');

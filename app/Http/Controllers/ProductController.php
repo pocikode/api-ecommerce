@@ -72,9 +72,6 @@ class ProductController extends Controller
     {
         $this->validateForm($req);
 
-        $imageName = date('Ymd') . str_random(6) . '.' . $req->image->getClientOriginalExtension();
-        $req->image->move('./images/products/', $imageName);
-
         $data = Product::create([
             'code'  => $req->code,
             'name'  => $req->name,
@@ -82,7 +79,7 @@ class ProductController extends Controller
             'sub_category_id' => $req->sub_category_id,
             'price' => $req->price,
             'weight'=> $req->weight,
-            'image' => url('images/products/' . $imageName),
+            'image' => $req->image,
             'description' => $req->description,
             'sizes' => $this->createSizes($req->size, $req->stock),
         ]);
@@ -96,10 +93,21 @@ class ProductController extends Controller
         ]);
     }
 
+    public function uploadImage(Request $req)
+    {
+        $imageName = date('Ymd') . str_random(6) . '.' . $req->image->getClientOriginalExtension();
+        $req->image->move('./images/products/', $imageName);
+
+        return response()->json([
+            'success' => true,
+            'url' => url('images/products/' . $imageName)
+        ]);
+    }
+
     # update product
     public function update(Request $req, $id)
     {
-        $this->validateForm();
+        $this->validateForm($req);
 
         $product = Product::find($id);
         if (!$product) {
@@ -109,7 +117,18 @@ class ProductController extends Controller
             ], 404);
         }
 
-        $update = $product->update($req->all());
+        $update = $product->update([
+            'code' => $req->code,
+            'name' => $req->name,
+            'category_id' => $req->category_id,
+            'sub_category_id' => $req->sub_category_id,
+            'price' => $req->price,
+            'weight' => $req->weight,
+            'image' => $req->image,
+            'description' => $req->description,
+            'sizes' => $this->createSizes($req->size, $req->stock),
+        ]);
+
         return response()->json([
             'success' => true,
             'message' => 'Product updated!'
@@ -144,7 +163,7 @@ class ProductController extends Controller
             'sub_category_id' => 'integer|required',
             'price' => 'integer|required',
             'weight'=> 'integer|required',
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:512',
+            'image' => 'required|string',
             'description' => 'required',
             'size'  => 'required|array',
             'stock' => 'required|array',
