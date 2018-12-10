@@ -21,4 +21,9 @@ class Customer extends Model
     protected $hidden = [
         'password'
     ];
+
+    public function cart()
+    {
+        return $this->hasOne('App\Cart', 'customer_id');
+    }
 }

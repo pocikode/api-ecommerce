@@ -85,3 +85,10 @@ $router->get('bank/{id}', 'BankController@show');
 $router->post('bank', 'BankController@create');
 $router->put('bank/{id}', 'BankController@update');
 $router->delete('bank/{id}', 'BankController@delete');
+
+/**
+ * Cart
+ */
+$router->get('cart', 'Customer\CartController@show');
+$router->post('cart', 'Customer\CartController@addToCart');
+$router->delete('cart/{idItem}', 'Customer\CartController@delete');
