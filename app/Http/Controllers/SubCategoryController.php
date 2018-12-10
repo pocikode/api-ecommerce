@@ -67,18 +67,20 @@ class SubCategoryController extends Controller
             'name' => 'required',
             'category_id' => 'required',
         ]);
-
-        # validate category
-        if (!$this->checkCategory($req->category_id)) {
+        
+        # check category
+        $category = Category::find($req->category_id);
+        if (!$category) {
             return response()->json([
                 'success' => false,
                 'message' => 'Category Not Found!'
-            ], 400);
+            ], 404);
         }
 
         # create data
         $subCategory = SubCategory::create([
             'category_id'   => $req->category_id,
+            'category_name' => $category->name,
             'name'  => $req->name,
             'icon'  => 'null'
         ]);
@@ -103,7 +105,20 @@ class SubCategoryController extends Controller
             return response()->json(['success' => false, 'message' => 'Sub Category not found!'], 404);
         }
 
-        $update = $subCategory->update($req->all());
+        # check category
+        $category = Category::find($req->category_id);
+        if (!$category) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Category Not Found!'
+            ], 404);
+        }
+
+        $update = $subCategory->update([
+            'category_id' => $req->category_id,
+            'category_name' => $category->name,
+            'name' => $req->name,
+        ]);
         return response()->json(['success' => true, 'message' => 'Data Updated!']);
     }
 
@@ -118,14 +133,5 @@ class SubCategoryController extends Controller
 
         $subCategory->delete();
         return response()->json(['success' => true, 'message' => 'Data Deleted!']);
-    }
-
-    # CHECK CATEGORY
-    private function checkCategory($id)
-    {
-        $category = Category::find($id);
-        if ($category) {
-            return true;
-        }
     }
 }

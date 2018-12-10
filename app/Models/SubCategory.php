@@ -8,7 +8,7 @@ class SubCategory extends Model
 {
     protected $primaryKey = 'sub_category_id';
 
-    protected $fillable = ['category_id', 'name', 'icon'];
+    protected $fillable = ['category_id', 'category_name', 'name', 'icon'];
 
     public function category()
     {
