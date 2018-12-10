@@ -42,6 +42,7 @@ class SubCategoryController extends Controller
     # show sub category by category id
     public function showCategory($catId)
     {
+        $category = Category::find($catId);
         $subCategory = SubCategory::where('category_id', $catId)->get()->all();
         if (!$subCategory) {
             return response()->json([
@@ -50,7 +51,13 @@ class SubCategoryController extends Controller
             ], 200);
         }
 
-        return response()->json($subCategory);
+        $data = new \stdClass();
+        $data->category_id   = $category->category_id;
+        $data->category_name = $category->name;
+        $data->sub_total     = count($subCategory);
+        $data->datasub       = $subCategory;
+
+        return response()->json($data);
     }
 
     # store sub category
