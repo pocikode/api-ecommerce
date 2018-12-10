@@ -28,10 +28,11 @@ class AuthController extends Controller
     {
         # set token payload
         $payload = [
+            'iss'   => 'php-jwt',
             'level' => 'customer',
             'sub'   => $customer->customer_id,
             'iat'   => time(),
-            'exp'   => time() + 60*60*24
+            // 'exp'   => time() + 60*60*24
         ];
 
         return JWT::encode($payload, env('JWT_SECRET'));
