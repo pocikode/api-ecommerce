@@ -93,3 +93,12 @@ $router->delete('bank/{id}', 'BankController@delete');
 $router->get('cart', 'Customer\CartController@show');
 $router->post('cart', 'Customer\CartController@addToCart');
 $router->delete('cart/{idItem}', 'Customer\CartController@delete');
+
+/**
+ * Shippings
+ */
+$router->get('shipping', 'Customer\ShippingController@index');
+$router->get('shipping/{id}', 'Customer\ShippingController@show');
+$router->post('shipping', 'Customer\ShippingController@create');
+$router->put('shipping/{id}', 'Customer\ShippingController@update');
+$router->delete('shipping/{id}', 'Customer\ShippingController@delete');
