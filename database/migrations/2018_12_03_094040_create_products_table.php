@@ -18,13 +18,16 @@ class CreateProductsTable extends Migration
             $table->string('code');
             $table->string('name', 255);
             $table->unsignedInteger('category_id');
+            $table->string('category_name');
             $table->unsignedInteger('sub_category_id');
+            $table->string('sub_category_name');
             $table->unsignedInteger('brand_id')->nullable();
             $table->integer('point')->default(0);
             $table->integer('price');
             $table->integer('weight');
             $table->string('image');
             $table->text('description');
+            $table->string('sizes');
             $table->integer('sold')->default(0);
             $table->integer('hit_views')->default(0);
             $table->boolean('status')->default(1);

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Models\SubCategory;
 
 class ProductController extends Controller
 {
@@ -72,11 +74,16 @@ class ProductController extends Controller
     {
         $this->validateForm($req);
 
+        $category = Category::find($req->category_id);
+        $subcategory = SubCategory::find($req->sub_category_id);
+
         $data = Product::create([
             'code'  => $req->code,
             'name'  => $req->name,
             'category_id' => $req->category_id,
+            'category_name' => $category->name,
             'sub_category_id' => $req->sub_category_id,
+            'sub_category_name' => $subcategory->name,
             'price' => $req->price,
             'weight'=> $req->weight,
             'image' => $req->image,
@@ -95,6 +102,10 @@ class ProductController extends Controller
 
     public function uploadImage(Request $req)
     {
+        $this->validate($req, [
+            'image' => 'required|image|mimes:jpg,png,jpeg'
+        ]);
+
         $imageName = date('Ymd') . str_random(6) . '.' . $req->image->getClientOriginalExtension();
         $req->image->move('./images/products/', $imageName);
 
@@ -115,13 +126,20 @@ class ProductController extends Controller
                 'success' => false,
                 'message' => 'Product not found!'
             ], 404);
+            
+            exit();
         }
+
+        $category = Category::find($req->category_id);
+        $subcategory = SubCategory::find($req->sub_category_id);
 
         $update = $product->update([
             'code' => $req->code,
             'name' => $req->name,
             'category_id' => $req->category_id,
+            'category_name' => $category->name,
             'sub_category_id' => $req->sub_category_id,
+            'sub_category_name' => $subcategory->name,
             'price' => $req->price,
             'weight' => $req->weight,
             'image' => $req->image,
