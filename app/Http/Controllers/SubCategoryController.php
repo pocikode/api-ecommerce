@@ -65,7 +65,7 @@ class SubCategoryController extends Controller
     {
         $this->validate($req, [
             'name' => 'required|string',
-            'category_id' => 'required|string',
+            'category_id' => 'required',
             'image'=> 'required|string'
         ]);
         
@@ -97,7 +97,7 @@ class SubCategoryController extends Controller
     public function update(Request $req, $id)
     {
         $this->validate($req, [
-            'category_id' => 'required|string',
+            'category_id' => 'required',
             'name' => 'required|string',
             'image'=> 'required|string'
         ]);

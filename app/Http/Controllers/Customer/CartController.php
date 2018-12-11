@@ -20,15 +20,14 @@ class CartController extends Controller
     {
         # check cart
         $cart = Cart::where('customer_id', $req->user->customer_id)->first();
-        # check item cart
-        $items = CartItem::where('cart_id', $cart->cart_id)->get()->all();
-        
-        if (!$cart || !$items) {
-            return response()->json([
-                'message' => 'Cart is empty',
-                'data' => null
+        if (!$cart) {
+            $cart = Cart::create([
+                'customer_id'   => $req->user->customer_id,
             ]);
         }
+
+        # check item cart
+        $items = CartItem::where('cart_id', $cart->cart_id)->get()->all();
 
         # make collection
         $data = new \stdClass();
