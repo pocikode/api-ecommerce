@@ -15,14 +15,14 @@ class SubCategoriesTableSeeder extends Seeder
         # pria - kemeja pria
         SubCategory::create([
             'category_id'   => 1,
-            'category_name' => 'Man',
+            'category_name' => 'Pria',
             'name'          => 'Kemeja Pria'
         ]);
 
         # pria - celana panjang
         SubCategory::create([
             'category_id' => 1,
-            'category_name' => 'Man',
+            'category_name' => 'Pria',
             'name' => 'Celana Panjang'
         ]);
     }

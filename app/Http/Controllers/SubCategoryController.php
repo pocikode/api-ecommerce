@@ -64,8 +64,9 @@ class SubCategoryController extends Controller
     public function create(Request $req)
     {
         $this->validate($req, [
-            'name' => 'required',
-            'category_id' => 'required',
+            'name' => 'required|string',
+            'category_id' => 'required|string',
+            'image'=> 'required|string'
         ]);
         
         # check category
@@ -82,7 +83,7 @@ class SubCategoryController extends Controller
             'category_id'   => $req->category_id,
             'category_name' => $category->name,
             'name'  => $req->name,
-            'icon'  => 'null'
+            'icon'  => $req->image
         ]);
 
         return response()->json([
@@ -96,7 +97,9 @@ class SubCategoryController extends Controller
     public function update(Request $req, $id)
     {
         $this->validate($req, [
-            'name' => 'required',
+            'category_id' => 'required|string',
+            'name' => 'required|string',
+            'image'=> 'required|string'
         ]);
 
         # check if sub category exists
@@ -118,6 +121,7 @@ class SubCategoryController extends Controller
             'category_id' => $req->category_id,
             'category_name' => $category->name,
             'name' => $req->name,
+            'image'=> $req->image,
         ]);
         return response()->json(['success' => true, 'message' => 'Data Updated!']);
     }
@@ -133,5 +137,21 @@ class SubCategoryController extends Controller
 
         $subCategory->delete();
         return response()->json(['success' => true, 'message' => 'Data Deleted!']);
+    }
+
+    # upload sub category image
+    public function uploadImage(Request $req)
+    {
+        $this->validate($req, [
+            'image' => 'required|image|mimes:jpg,png,jpeg'
+        ]);
+
+        $imageName = 'subcategory' . str_random(6) . '.' . $req->image->getClientOriginalExtension();
+        $req->image->move('./images/subcategory/', $imageName);
+
+        return response()->json([
+            'success' => true,
+            'url'     => url('images/subcategory/' . $imageName)
+        ]);
     }
 }

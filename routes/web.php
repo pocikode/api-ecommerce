@@ -39,6 +39,7 @@ $router->get('subcategory/{id}', 'SubCategoryController@show');
 $router->post('subcategory', 'SubCategoryController@create');
 $router->put('subcategory/{id}', 'SubCategoryController@update');
 $router->delete('subcategory/{id}', 'SubCategoryController@delete');
+$router->post('subcategory/upload-image', 'SubCategoryController@uploadImage');
 
 /**
  *  Brand Route
