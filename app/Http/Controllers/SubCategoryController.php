@@ -121,7 +121,7 @@ class SubCategoryController extends Controller
             'category_id' => $req->category_id,
             'category_name' => $category->name,
             'name' => $req->name,
-            'image'=> $req->image,
+            'icon'=> $req->image,
         ]);
         return response()->json(['success' => true, 'message' => 'Data Updated!']);
     }
