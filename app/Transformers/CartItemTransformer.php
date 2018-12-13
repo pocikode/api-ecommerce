@@ -8,13 +8,16 @@ use App\Models\Cart;
 
 class CartItemTransformer extends TransformerAbstract
 {
-    public function transform(Cart $cart)
+    public static function transform(Cart $cart)
     {
         return [
-            'cart_id'       => (int) $cart->cart_id,
             'customer_id'   => (int) $cart->customer_id,
-            'total'         => $cart->total,
-            'total_qty'     => $cart->total_qty,
+            'customer_name' => $cart->customer()->first()->name,
+            'cart_id'       => (int) $cart->cart_id,
+            'qty'           => $cart->total_qty,
+            'amount'        => $cart->total,
+            'shipping_cost' => false,
+            'total'         => false,    
             'items'         => $cart->cartItem()->get(),
         ];
     }

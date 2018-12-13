@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\CartItem;
-use App\Transformer\CartItemTransformer;
+use App\Transformers\CartItemTransformer;
 
 class CartController extends Controller
 {
@@ -59,11 +59,11 @@ class CartController extends Controller
 
         # crate cart item
         $item = CartItem::create([
-            'cart_id'   => $cart->cart_id,
-            'product_id'=> $product->product_id,
+            'cart_id'      => $cart->cart_id,
+            'product_id'   => $product->product_id,
             'product_name' => $product->name,
-            'size'      => $req->size,
-            'price'     => $product->price
+            'size'         => $req->size,
+            'price'        => $product->price
         ]);
 
         return response()->json([
@@ -92,6 +92,12 @@ class CartController extends Controller
                 'message' => 'The item is not in your cart! You cannot delete it!'
             ], 400);
         }
+
+        # update cart
+        $cart->update([
+            'total' => $cart->total -= $item->price,
+            'total_qty' => $cart->total_qty -= 1,
+        ]);
 
         $item->delete();
         return response()->json([
