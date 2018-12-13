@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Resources\CategoryResources;
 
 class CategoryController extends Controller
 {
@@ -20,8 +21,8 @@ class CategoryController extends Controller
     # show all categories
     public function index()
     {
-        $categories = Category::all();
-        return response()->json($categories);
+        $categories = new CategoryResources;
+        return response()->json($categories->get());
     }
 
     # show by id
