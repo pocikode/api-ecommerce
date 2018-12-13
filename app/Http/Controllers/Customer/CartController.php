@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\CartItem;
+use App\Transformer\CartItemTransformer;
 
 class CartController extends Controller
 {
@@ -16,7 +17,7 @@ class CartController extends Controller
     }
 
     # show cart
-    public function show(Request $req)
+    public function show(Request $req, CartItemTransformer $transform)
     {
         # check cart
         $cart = Cart::where('customer_id', $req->user->customer_id)->first();
@@ -26,30 +27,22 @@ class CartController extends Controller
             ]);
         }
 
-        # check item cart
-        $items = CartItem::where('cart_id', $cart->cart_id)->get()->all();
-
-        # make collection
-        $data = new \stdClass();
-        $data->cart_id      = $cart->cart_id;
-        $data->customer_id  = $cart->customer_id;
-        $data->total        = $cart->total;
-        $data->total_qty    = $cart->total_qty;
-        $data->items        = $items;
-
-        return response()->json($data);
+        return response()->json($transform->transform($cart));
     }
 
     # add to cart
     public function addToCart(Request $req)
     {
+        # validate data
         $this->validate($req, [
             'product_id' => 'required|integer',
             'size'       => 'required'
         ]);
 
+        # get cart data
         $cart = Cart::where('customer_id', $req->user->customer_id)->first();
         if (!$cart) {
+            # if cart data is not exitst, create one
             $cart = Cart::create([
                 'customer_id' => $req->user->customer_id,
             ]);
@@ -58,11 +51,13 @@ class CartController extends Controller
         $product = Product::find($req->product_id);
         if (!$product) return false;
 
+        # update cart data
         $cart->update([
             'total' => $cart->total += $product->price,
             'total_qty' => $cart->total_qty += 1
         ]);
 
+        # crate cart item
         $item = CartItem::create([
             'cart_id'   => $cart->cart_id,
             'product_id'=> $product->product_id,
