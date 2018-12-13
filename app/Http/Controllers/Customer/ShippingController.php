@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Shipping;
+use DB;
 
 class ShippingController extends Controller
 {
@@ -57,6 +58,7 @@ class ShippingController extends Controller
     {
         # validate form data
         $this->validate($req, [
+            'shipping_name' => 'required|string',
             'received_name' => 'required|string',
             'address'       => 'required|string',
             'province_id'   => 'required|integer',
@@ -65,8 +67,15 @@ class ShippingController extends Controller
             'phone'         => 'required|numeric',
         ]);
 
+        # check data shippings
+        # if shipping > 0  default is false
+        # if shipping = 0 set to default
+        $shippings = Shipping::where('customer_id', $req->user->customer_id)->get();
+        $default = ($shippings->count() > 0) ? 0 : 1;
+
         # insert to database
         $shipping = Shipping::create([
+            'shipping_name' => $req->shipping_name,
             'customer_id'   => $req->user->customer_id,
             'received_name' => $req->received_name,
             'address'       => $req->address,
@@ -74,6 +83,7 @@ class ShippingController extends Controller
             'city_id'       => $req->city_id,
             'zip'           => $req->zip,
             'phone'         => $req->phone,
+            'default'       => $default,
         ]);
 
         return response()->json([
@@ -102,6 +112,7 @@ class ShippingController extends Controller
 
         # validate form data
         $this->validate($req, [
+            'shipping_name' => 'required|string',
             'received_name' => 'required|string',
             'address'       => 'required|string',
             'province_id'   => 'required|integer',
@@ -116,6 +127,23 @@ class ShippingController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Shipping updated!'
+        ]);
+    }
+
+    public function setDefault(Request $req, $id)
+    {
+        # get shipping by id
+        $shipping = Shipping::where('shipping_id', $id)->where('customer_id', $req->user->customer_id)->first();
+        if (!$shipping) return false;
+
+        # update all shippings customer to false
+        DB::table('shippings')->where('customer_id', '=', $req->user->customer_id)->update(['default' => false]);
+
+        # update shipping
+        $shipping->update(['default' => true]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Set to default, successfull',
         ]);
     }
 

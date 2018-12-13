@@ -16,6 +16,7 @@ class CreateShippingTable extends Migration
         # create shipping tables
         Schema::create('shippings', function (Blueprint $table) {
             $table->increments('shipping_id');
+            $table->string('shipping_name');
             $table->unsignedInteger('customer_id');
             $table->string('received_name');
             $table->string('address', 250);
@@ -23,6 +24,7 @@ class CreateShippingTable extends Migration
             $table->unsignedInteger('city_id');
             $table->integer('zip');
             $table->string('phone', 20);
+            $table->boolean('default');
             $table->timestamps();
         });
 
@@ -56,6 +58,6 @@ class CreateShippingTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shipping');
+        Schema::dropIfExists('shippings');
     }
 }

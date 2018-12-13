@@ -12,7 +12,7 @@ class Shipping extends Model
     protected $primaryKey = 'shipping_id';
     
     protected $fillable = [
-        'customer_id', 'received_name', 'address', 'province_id', 'city_id', 'zip', 'phone',
+        'shipping_name', 'customer_id', 'received_name', 'address', 'province_id', 'city_id', 'zip', 'phone', 'default'
     ];
 
     public function customer()
