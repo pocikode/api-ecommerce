@@ -18,6 +18,7 @@ class CreateCartsTable extends Migration
             $table->unsignedInteger('customer_id');
             $table->bigInteger('total')->default(0);
             $table->integer('total_qty')->default(0);
+            $table->integer('total_weight')->default(0);
             $table->timestamps();
         });
 

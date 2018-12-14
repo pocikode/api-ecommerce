@@ -2,7 +2,6 @@
 
 namespace App\Transformers;
 
-use League\Fractal;
 use League\Fractal\TransformerAbstract;
 use App\Models\Cart;
 
@@ -16,6 +15,7 @@ class CartItemTransformer extends TransformerAbstract
             'cart_id'       => (int) $cart->cart_id,
             'qty'           => $cart->total_qty,
             'amount'        => $cart->total,
+            'total_weight'  => $cart->total_weight,
             'shipping_cost' => false,
             'total'         => false,    
             'items'         => $cart->cartItem()->get(),

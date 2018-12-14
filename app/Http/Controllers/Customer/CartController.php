@@ -53,8 +53,9 @@ class CartController extends Controller
 
         # update cart data
         $cart->update([
-            'total' => $cart->total += $product->price,
-            'total_qty' => $cart->total_qty += 1
+            'total'         => $cart->total += $product->price,
+            'total_qty'     => $cart->total_qty += 1,
+            'total_weight'  => $cart->total_weight += $product->weight,
         ]);
 
         # crate cart item
@@ -95,8 +96,9 @@ class CartController extends Controller
 
         # update cart
         $cart->update([
-            'total' => $cart->total -= $item->price,
-            'total_qty' => $cart->total_qty -= 1,
+            'total'         => $cart->total -= $item->price,
+            'total_qty'     => $cart->total_qty -= 1,
+            'total_weight'  => $cart->total_weight -= $item->weight,
         ]);
 
         $item->delete();
