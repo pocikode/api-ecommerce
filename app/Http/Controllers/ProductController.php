@@ -25,13 +25,15 @@ class ProductController extends Controller
     {
         $products = Product::where('status', true)->get()->all();
 
+        # encode size & stocks
         $dummyProd = [];
         foreach ($products as $product) {
             $product->sizes = json_decode($product->sizes);
+            $product->stocks = json_decode($product->stocks);
             $dummyProd[] = $product;
         }
 
-        return response()->json($dummyProd);
+        return response($dummyProd);
     }
 
     #show product info
@@ -89,7 +91,9 @@ class ProductController extends Controller
             'weight'=> $req->weight,
             'image' => $req->image,
             'description' => $req->description,
-            'sizes' => $this->createSizes($req->size, $req->stock),
+            // 'sizes' => $this->createSizes($req->size, $req->stock),
+            'sizes' => json_encode($req->size),
+            'stocks'=> json_encode($req->stock),
         ]);
 
         $data->sizes = json_decode($data->sizes);
@@ -150,7 +154,8 @@ class ProductController extends Controller
             'weight' => $req->weight,
             'image' => $req->image,
             'description' => $req->description,
-            'sizes' => $this->createSizes($req->size, $req->stock),
+            'sizes' => json_encode($req->size),
+            'stocks'=> json_encode($req->stock),
         ]);
 
         return response()->json([
