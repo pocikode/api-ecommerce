@@ -48,6 +48,7 @@ class ProductController extends Controller
         }
 
         $product->sizes = json_decode($product->sizes);
+        $product->stocks= json_decode($product->stocks);
 
         return response()->json($product);
     }
@@ -55,17 +56,21 @@ class ProductController extends Controller
     # show product, sort by category and sub category
     public function sort(Request $req, int $idCategory)
     {
+        # get id sub category
         $idSub = $req->get('idSub') ?? null;
 
         if (!$idSub) {
+            # if id sub category is exists
             $products = Product::where('category_id', $idCategory)->get()->all();
         } else {
+            # if id sub category is not exists
             $products = Product::where('category_id', $idCategory)->where('sub_category_id', $idSub)->get()->all();
         }
 
         $dummyProd = [];
         foreach ($products as $product) {
             $product->sizes = json_decode($product->sizes);
+            $product->stocks= json_decode($product->stocks);
             $dummyProd[] = $product;
         }
 
