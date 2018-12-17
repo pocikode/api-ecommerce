@@ -14,7 +14,7 @@ class AddStocksInProductsTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->string('stocks', 250)->after('sizes');
+            $table->string('stocks', 250)->after('sizes')->nullable();
         });
     }
 
