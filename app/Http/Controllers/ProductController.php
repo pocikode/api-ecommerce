@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\SubCategory;
+use Cloudinary\Uploader;
 
 class ProductController extends Controller
 {
@@ -106,12 +107,17 @@ class ProductController extends Controller
             'image' => 'required|image|mimes:jpg,png,jpeg'
         ]);
 
-        $imageName = date('Ymd') . str_random(6) . '.' . $req->image->getClientOriginalExtension();
-        $req->image->move('./images/products/', $imageName);
+        $imageName = date('Ymd') . str_random(6);
+
+        # Upload to Cloudinary
+        $image = Uploader::upload($req->file('image')->getRealPath(), [
+            'public_id' => $imageName,
+            'folder'    => 'products'
+        ]);
 
         return response()->json([
             'success' => true,
-            'url' => url('images/products/' . $imageName)
+            'url' => $image['secure_url']
         ]);
     }
 

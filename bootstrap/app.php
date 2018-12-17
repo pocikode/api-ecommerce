@@ -85,6 +85,20 @@ $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
+/**
+ * ------------------------------------------------------------------------
+ * Packages Config
+ * ------------------------------------------------------------------------
+ * Here the config of some packages, like cloudinary
+ * 
+ */
+# Cloudinary
+Cloudinary::config([
+    'cloud_name'    => env('CLOUDINARY_CLOUD_NAME', true),
+    'cloud_key'     => env('CLOUDINARY_API_KEY', true),
+    'cloud_secret'  => env('CLOUDINARY_API_SECRET', true)
+]);
+
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes

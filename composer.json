@@ -10,7 +10,8 @@
         "laravel/lumen-framework": "5.7.*",
         "league/fractal": "^0.17.0",
         "steevenz/rajaongkir": "^2.2",
-        "vlucas/phpdotenv": "~2.2"
+        "vlucas/phpdotenv": "~2.2",
+        "cloudinary/cloudinary_php": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

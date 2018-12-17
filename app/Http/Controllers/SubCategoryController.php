@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Cloudinary\Uploader;
 
 class SubCategoryController extends Controller
 {
@@ -146,12 +147,17 @@ class SubCategoryController extends Controller
             'image' => 'required|image|mimes:jpg,png,jpeg'
         ]);
 
-        $imageName = 'subcategory' . str_random(6) . '.' . $req->image->getClientOriginalExtension();
-        $req->image->move('./images/subcategory/', $imageName);
+        $imageName = 'subcategory' . str_random(6);
+        
+        # Upload to Cloudinary
+        $image = Uploader::upload($req->file('image')->getRealPath(), [
+            'public_id' => $imageName, 
+            'folder' => 'subcategories'
+        ]);
 
         return response()->json([
             'success' => true,
-            'url'     => url('images/subcategory/' . $imageName)
+            'url'     => $image['secure_url']
         ]);
     }
 }
