@@ -71,4 +71,22 @@ class OngkirController extends Controller
 
         return response()->json($cost);
     }
+
+    public function courier(Request $req)
+    {
+        $destination = $req->get('destination'); # destination city
+        $weight = $req->get('weight'); # wight in gram
+
+        $data = [
+            'origin'        => env('WAREHOUSE_LOCATION'),
+            'destination'   => $destination,
+            'weight'        => $weight . ' grams',
+        ];
+
+        $couriers = \App\Resources\CourierResources::get($destination, $weight);
+
+        $merge = array_merge($data, $couriers);
+
+        return response()->json($merge);
+    }
 }

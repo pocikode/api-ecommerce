@@ -13,9 +13,6 @@ class AddStocksInProductsTable extends Migration
      */
     public function up()
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->string('stocks', 250)->after('sizes')->nullable();
-        });
     }
 
     /**
@@ -25,8 +22,5 @@ class AddStocksInProductsTable extends Migration
      */
     public function down()
     {
-        Schema::table('products', function (Blueprint $table) {
-            //
-        });
     }
 }

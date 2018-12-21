@@ -28,6 +28,7 @@ class CreateProductsTable extends Migration
             $table->string('image');
             $table->text('description');
             $table->string('sizes');
+            $table->string('stocks');
             $table->integer('sold')->default(0);
             $table->integer('hit_views')->default(0);
             $table->boolean('status')->default(1);

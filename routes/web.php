@@ -18,7 +18,6 @@ $router->post('register', 'Customer\AuthController@register');
 $router->post('login', 'Customer\AuthController@login');
 $router->get('profile', 'Customer\ProfileController@show');
 $router->put('profile', 'Customer\ProfileController@update');
-
 $router->get('customers', 'Admin\CustomerController@index'); # ADMIN ONLY
 
 /**
@@ -56,27 +55,18 @@ $router->delete('brand/{id}', 'BrandController@delete');
 $router->get('product', 'ProductController@index');
 $router->get('product/{id}', 'ProductController@show');
 $router->get('product/category/{idCategory}', 'ProductController@sort'); 
-# to sort with sub category, add idSub parameter, ex : http://{api_url}/product/category/{idCategory}?idSub={idSub}
 $router->post('product', 'ProductController@create');
 $router->put('product/{id}', 'ProductController@update');
 $router->delete('product/{id}', 'ProductController@delete');
 $router->post('product/upload-image', 'ProductController@uploadImage');
 
 /**
- * Province, City and Onkir
+ * Province, City and Onkir, Courier
  */
 $router->get('province', 'OngkirController@province');
 $router->get('city', 'OngkirController@city');
-$router->get('ongkir', 'OngkirController@cost');
-
-/**
- *  Courier 
- */
-$router->get('courier', 'CourierController@index');
-$router->get('courier/{id}', 'CourierController@show');
-$router->post('courier', 'CourierController@create');
-$router->put('courier/{id}', 'CourierController@update');
-$router->delete('courier/{id}', 'CourierController@delete');
+$router->get('cost', 'OngkirController@cost');
+$router->get('courier', 'OngkirController@courier');
 
 /**
  *  Bank 
@@ -103,3 +93,36 @@ $router->post('shipping', 'Customer\ShippingController@create');
 $router->put('shipping/{id}', 'Customer\ShippingController@update');
 $router->patch('shipping/{id}', 'Customer\ShippingController@setDefault'); # set shipping to default
 $router->delete('shipping/{id}', 'Customer\ShippingController@delete');
+
+/**
+ * Checkout
+ */
+$router->get('checkout', 'Customer\CheckoutController@checkout');
+$router->get('checkout/process', 'Customer\CheckoutController@process');
+
+/**
+ * Order
+ * for customer (check unpaid order, confirmed order, shipped order)
+ */
+# for customers :
+$router->get('order/unpaid', 'Customer\OrderController@unpaid');
+$router->get('order/waiting-confirm', 'Customer\OrderController@waitingConfirm');
+$router->get('order/onprocess', 'Customer\OrderController@onProcess');
+$router->get('order/onshipping', 'Customer\OrderController@onShipping');
+$router->get('order/confirm-received', 'Customer\OrderController@received');
+$router->get('order/history', 'Customer\OrderController@history');
+# for admins :
+$router->get('order/unconfirmed', 'Admin\OrderController@unconfirmed');
+$router->get('order/confirm', 'Admin\OrderController@confirm');
+$router->get('order/waiting-shipping', 'Admin\OrderController@processed');
+$router->post('order/confirm-shipping', 'Admin\OrderController@confirmShipping');
+$router->get('order/show-success', 'Admin\OrderController@success');
+
+/**
+ * Payment Confirm
+ * Confirm payment for customers
+ * Confirm payment for admin
+ */
+$router->post('confirm', 'Customer\PaymentController@confirmCustomer'); # customer
+$router->get('payment/{id:[0-9]+}', 'Admin\PaymentController@show'); # admin & customer
+$router->get('payment/unconfirmed', 'Admin\PaymentController@unconfirmed'); # admin
