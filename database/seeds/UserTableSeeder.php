@@ -19,7 +19,6 @@ class UserTableSeeder extends Seeder
             'username'  => 'aguzs',
             'email'     => 'aguzsupriyatna7@gmail.com',
             'password'  => Hash::make('12345'),
-            'photo'     => url('images/default-user-photo.png')
         ]);
 
         // Adi
@@ -28,7 +27,6 @@ class UserTableSeeder extends Seeder
             'username'  => 'adi',
             'email'     => 'adi@gmail.com',
             'password'  => Hash::make('12345'),
-            'photo'     => url('images/default-user-photo.png')
         ]);
     }
 }

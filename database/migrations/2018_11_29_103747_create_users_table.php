@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('username')->unique();
             $table->string('email')->nullable();
             $table->string('password', 255);
-            $table->string('photo', 255)->nullable();
+            $table->string('photo', 255)->default("https://res.cloudinary.com/aguzs/image/upload/v1545460485/default-user-photo.png");
             $table->timestamps();
         });
     }

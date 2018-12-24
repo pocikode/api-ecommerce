@@ -9,6 +9,8 @@ $router->group(['prefix' => 'admin'], function () use ($router) {
     $router->post('login', 'Admin\AuthController@auth');
     $router->get('profile', 'Admin\ProfileController@show');
     $router->put('profile', 'Admin\ProfileController@update');
+    $router->post('profile/upload-image', 'Admin\ProfileController@uploadImage');
+    $router->put('profile/change-password', 'Admin\ProfileController@changePassword');
 });
 
 /**
@@ -18,7 +20,9 @@ $router->post('register', 'Customer\AuthController@register');
 $router->post('login', 'Customer\AuthController@login');
 $router->get('profile', 'Customer\ProfileController@show');
 $router->put('profile', 'Customer\ProfileController@update');
-$router->get('customers', 'Admin\CustomerController@index'); # ADMIN ONLY
+$router->post('profile/upload-image', 'Customer\ProfileController@uploadImage');
+$router->put('profile/change-password', 'Customer\ProfileController@changePassword');
+$router->get('customers', 'Admin\CustomerController@index'); # ADMIN ONLY, show all customers
 
 /**
  *  Category Route 
