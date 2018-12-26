@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\CartItem;
-use App\Transformers\CartItemTransformer;
+use App\Resources\CartResource;
 
 class CartController extends Controller
 {
@@ -17,17 +17,12 @@ class CartController extends Controller
     }
 
     # show cart
-    public function show(Request $req, CartItemTransformer $transform)
+    public function show(Request $req)
     {
         # check cart
-        $cart = Cart::where('customer_id', $req->user->customer_id)->first();
-        if (!$cart) {
-            $cart = Cart::create([
-                'customer_id'   => $req->user->customer_id,
-            ]);
-        }
+        $cart = CartResource::get($req->user->customer_id);
 
-        return response()->json($transform->transform($cart));
+        return response()->json($cart);
     }
 
     # add to cart
@@ -98,7 +93,7 @@ class CartController extends Controller
         $cart->update([
             'total'         => $cart->total -= $item->price,
             'total_qty'     => $cart->total_qty -= 1,
-            'total_weight'  => $cart->total_weight -= $item->weight,
+            'total_weight'  => $cart->total_weight -= $item->product()->first()->weight,
         ]);
 
         $item->delete();

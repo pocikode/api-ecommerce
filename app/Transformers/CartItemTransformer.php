@@ -3,22 +3,20 @@
 namespace App\Transformers;
 
 use League\Fractal\TransformerAbstract;
-use App\Models\Cart;
+use App\Models\CartItem;
 
 class CartItemTransformer extends TransformerAbstract
 {
-    public static function transform(Cart $cart)
+    public static function transform(CartItem $item)
     {
         return [
-            'customer_id'   => (int) $cart->customer_id,
-            'customer_name' => $cart->customer()->first()->name,
-            'cart_id'       => (int) $cart->cart_id,
-            'qty'           => $cart->total_qty,
-            'amount'        => $cart->total,
-            'total_weight'  => $cart->total_weight,
-            'shipping_cost' => false,
-            'total'         => false,    
-            'items'         => $cart->cartItem()->get(),
+            'id'            => $item->id,
+            'cart_id'       => $item->cart_id,
+            'product_id'    => $item->product_id,
+            'product_name'  => $item->product()->first()->name,
+            'product_image' => $item->product()->first()->image,
+            'size'          => $item->size,
+            'price'         => $item->price,
         ];
     }
 }

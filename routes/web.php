@@ -91,12 +91,8 @@ $router->delete('cart/{idItem}', 'Customer\CartController@delete');
 /**
  * Shippings
  */
-$router->get('shipping', 'Customer\ShippingController@index');
-$router->get('shipping/{id}', 'Customer\ShippingController@show');
-$router->post('shipping', 'Customer\ShippingController@create');
-$router->put('shipping/{id}', 'Customer\ShippingController@update');
-$router->patch('shipping/{id}', 'Customer\ShippingController@setDefault'); # set shipping to default
-$router->delete('shipping/{id}', 'Customer\ShippingController@delete');
+$router->get('shipping', 'Customer\ShippingController@show');
+$router->post('shipping', 'Customer\ShippingController@post');
 
 /**
  * Checkout

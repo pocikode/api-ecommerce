@@ -17,16 +17,16 @@ class Shipping extends Model
 
     public function customer()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
 
     public function city()
     {
-        return $this->belongsTo(City::class);
+        return $this->belongsTo(City::class, 'city_id');
     }
 
     public function province()
     {
-        return $this->belongsTo(Province::class);
+        return $this->belongsTo(Province::class, 'province_id');
     }
 }

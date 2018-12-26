@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Product;
-use App\Models\Shipping;
+use App\Resources\ShippingResource;
 use App\Models\Order;
 use App\Models\OrderDetail;
-use App\Transformers\CartItemTransformer;
+use App\Resources\CartResource;
 use Illuminate\Http\Request;
 
 class CheckoutController extends Controller
@@ -21,82 +21,81 @@ class CheckoutController extends Controller
     # Checkout
     public function checkout(Request $req)
     {
+        # get data cart
+        $data = CartResource::get($req->user->customer_id);
+        if ($data['cart']['qty'] == 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cart is empty!',
+            ], 406);
+        }
+
         # check shipping
-        $shipping = Shipping::where('customer_id', $req->user->customer_id)->where('default', 1)->first();
+        $shipping = ShippingResource::get($req->user->customer_id);
         if (!$shipping) {
             return response()->json([
                 'success' => false,
                 'message' => 'No shipping address',
                 'shipping'=> null,
-            ]);
-        }
-
-        # get data cart
-        $cart = Cart::where('customer_id', $req->user->customer_id)->first();
-        if (!$cart) {
-            $cart = Cart::create([
-                'customer_id' => $req->user->customer_id,
-            ]);
-        }
-
-        # transform cart data
-        $data = CartItemTransformer::transform($cart);
-        if ($data['items']->count() == 0) {
-            return response()->json([
-                'success'   => false,
-                'message'   => 'Cart is empty!',
-            ], 400);
+            ], 406);
         }
 
         # get shipping cost
-        $shippingCost = \App\Resources\CourierResources::getShippingCost($shipping->city_id, $cart->total_weight);
+        $shippingCost = \App\Resources\CourierResources::getShippingCost($shipping['city_id'], $data['cart']['total_weight']);
 
-        $data['shipping_cost'] = $shippingCost['cost'];
-        $data['total']         = $data['amount'] + $shippingCost['cost'];
-        $data['shipping']      = $shippingCost;
+        $data['cart']['shipping_cost'] = $shippingCost['cost'];
+        $data['cart']['total']         = $data['cart']['amount'] + $shippingCost['cost'];
+        $data['shipping']              = $shipping;
         
-        return response()->json($data);
+        return response()->json(array_merge(['success' => true], $data));
     }
 
     # Proses checkout
     public function process(Request $req)
     {
-        # check shipping
-        $shipping = Shipping::where('customer_id', $req->user->customer_id)->where('default', 1)->first();
-
-         # get cart data
-        $cart = Cart::where('customer_id', $req->user->customer_id)->first();
-        $cart = CartItemTransformer::transform($cart);
-        if ($cart['items']->count() == 0) {
+        # get data cart
+        $cart = CartResource::get($req->user->customer_id);
+        if ($cart['cart']['qty'] == 0) {
             return response()->json([
                 'success' => false,
                 'message' => 'Cart is empty!',
-            ], 400);
+            ], 406);
+        }
+
+        # check shipping
+        $shipping = ShippingResource::get($req->user->customer_id);
+        if (!$shipping) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No shipping address',
+                'shipping' => null,
+            ], 406);
         }
 
         # get shipping cost
-        $shippingCost = \App\Resources\CourierResources::getShippingCost($shipping->city_id, $cart['total_weight']);
+        $shippingCost = \App\Resources\CourierResources::getShippingCost($shipping['city_id'], $cart['cart']['total_weight']);
 
+        # generate invoice
         $invoice = $this->createInvoice();
 
         # insert to orders table
         $order = Order::create([
             'invoice'       => $invoice,
             'customer_id'   => $req->user->customer_id,
-            'amount'        => $cart['amount'],
+            'amount'        => $cart['cart']['amount'],
             'shipping_cost' => $shippingCost['cost'],
-            'total_payment' => $cart['amount'] + $shippingCost['cost'],
-            'received_name' => $shipping->received_name,
-            'address'       => $shipping->address,
-            'province_id'   => $shipping->province_id,
-            'city_id'       => $shipping->city_id,
-            'zip'           => $shipping->zip,
-            'phone'         => $shipping->phone,
+            'total_payment' => $cart['cart']['amount'] + $shippingCost['cost'],
+            'received_name' => $shipping['received_name'],
+            'address'       => $shipping['address'],
+            'province_id'   => $shipping['province_id'],
+            'city_id'       => $shipping['city_id'],
+            'zip'           => $shipping['zip'],
+            'phone'         => $shipping['phone'],
             'due_date'      => date('Y-m-d H:i:s', strtotime('+24 hours', strtotime(date('Y-m-d H:i:s')))),
         ]);
 
-        $this->insertDetails($order->order_id, $cart['items']); # insert to order details table
-        $this->updateProducts($cart['items']); # update product sizes
+        $this->insertDetails($order->order_id, $cart['items']['data']); # insert to order details table
+        $this->updateProducts($cart['items']['data']); # update product sizes
         $this->deleteCart($req->user->customer_id); # empty cart
         
         return response()->json($order);
@@ -136,10 +135,10 @@ class CheckoutController extends Controller
         foreach ($items as $item) {
             OrderDetail::create([
                 'order_id'      => $orderID,
-                'product_id'    => $item->product_id,
-                'product_name'  => $item->product_name,
-                'size'          => $item->size,
-                'price'         => $item->price,
+                'product_id'    => $item['product_id'],
+                'product_name'  => $item['product_name'],
+                'size'          => $item['size'],
+                'price'         => $item['price'],
             ]);
         }
     }
@@ -153,7 +152,7 @@ class CheckoutController extends Controller
 
             # combine sizes and stocks
             $sizeStock = array_combine(json_decode($product->sizes), json_decode($product->stocks));
-            $sizeStock[$item->size]--;
+            $sizeStock[$item['size']]--;
 
             # if stock is empty, unset the size key
             if ($sizeStock[$item['size']] == 0)

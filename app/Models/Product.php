@@ -11,4 +11,9 @@ class Product extends Model
     protected $fillable = [
         'code', 'name', 'category_id', 'category_name', 'sub_category_id', 'sub_category_name', 'brand_id', 'point', 'price', 'weight', 'image', 'description', 'status', 'sold', 'hit_views', 'sizes', 'stocks',
     ];
+
+    public function cartItems()
+    {
+        return $this->hasMany('App\Models\CartItem', 'product_id');
+    }
 }

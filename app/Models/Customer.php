@@ -26,4 +26,14 @@ class Customer extends Model
     {
         return $this->hasOne('App\Cart', 'customer_id');
     }
+
+    public function shipping()
+    {
+        return $this->hasOne('App\Shipping', 'customer_id');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany('App\Order', 'customer_id');
+    }
 }
