@@ -13,7 +13,7 @@ class CartResource
         $cart = Cart::where('customer_id', $customerID)->first();
         if (!$cart) {
             $cart = Cart::create([
-                'customer_id' => $req->user->customer_id,
+                'customer_id' => $customerID,
             ]);
         }
 

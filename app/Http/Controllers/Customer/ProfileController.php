@@ -39,11 +39,15 @@ class ProfileController extends Controller
             'folder'    => 'customers',
         ]);
 
+        # update photo
+        $customer = Customer::find($req->user->customer_id);
+        $customer->update(['photo' => $image['secure_url']]);
+
         if ($image) {
             return response()->json([
                 'success'   => true,
                 'message'   => 'image uploaded!',
-                'url'       => $image['secure_url'],
+                'profile'   => Customer::find($req->user->customer_id)
             ]);
         }
     }
@@ -61,7 +65,8 @@ class ProfileController extends Controller
         $customer->update($req->all());
         return response()->json([
             'success' => true,
-            'message' => 'Profile updated!'
+            'message' => 'Profile updated!',
+            'profile' => Customer::find($req->user->customer_id)
         ]);
     }
 

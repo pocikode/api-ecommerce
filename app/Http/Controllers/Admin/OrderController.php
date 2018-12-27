@@ -17,7 +17,7 @@ class OrderController extends Controller
     # show orders data where status is unconfirmed have payment and payment is unconfirmed only
     public function unconfirmed()
     {
-        $unconfirmedOrders = OrderResources::unconfirmed();
+        $unconfirmedOrders = OrderResources::get('unconfirmed');
 
         return array_merge(['total' => count($unconfirmedOrders['data'])], $unconfirmedOrders);
     }
@@ -35,6 +35,11 @@ class OrderController extends Controller
                 'success' => false,
                 'message' => 'Order Not Found'
             ], 404);
+        } elseif ($order->status == 'confirmed') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Order has already confirmed!'
+            ], 406);
         }
         
         # update order status
@@ -71,6 +76,11 @@ class OrderController extends Controller
                 'success'   => false,
                 'message'   => 'Order Not Found!',
             ], 404);
+        } elseif ($order->status == 'shipped') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Order has already shipped!'
+            ], 406);
         }
 
         $order->update([

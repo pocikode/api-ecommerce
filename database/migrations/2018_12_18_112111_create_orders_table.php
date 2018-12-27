@@ -28,7 +28,7 @@ class CreateOrdersTable extends Migration
             $table->string('phone');
             $table->dateTime('due_date');
             $table->string('awb', 25)->nullable();
-            $table->enum('status', ['unconfirmed', 'confirmed', 'shipped', 'success'])->default('unconfirmed');
+            $table->enum('status', ['unpaid', 'unconfirmed', 'confirmed', 'rejected', 'shipped', 'success'])->default('unpaid');
             $table->timestamps();
 
             # foreign customer

@@ -126,3 +126,6 @@ $router->get('order/show-success', 'Admin\OrderController@success');
 $router->post('confirm', 'Customer\PaymentController@confirmCustomer'); # customer
 $router->get('payment/{id:[0-9]+}', 'Admin\PaymentController@show'); # admin & customer
 $router->get('payment/unconfirmed', 'Admin\PaymentController@unconfirmed'); # admin
+
+
+$router->get('count', 'Admin\CountController@count');

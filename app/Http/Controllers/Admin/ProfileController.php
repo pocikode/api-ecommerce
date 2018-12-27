@@ -30,8 +30,9 @@ class ProfileController extends Controller
     {
         $user = User::find($req->user->user_id)->update($req->all());
         return response()->json([
-            'success' =>true,
-            'message' => 'Profile Updated!'
+            'success' => true,
+            'message' => 'Profile Updated!',
+            'profile' => User::find($req->user->user_id)->update($req->all())
         ]);
     }
 

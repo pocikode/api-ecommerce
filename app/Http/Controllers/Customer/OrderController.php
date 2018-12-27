@@ -18,7 +18,7 @@ class OrderController extends Controller
     # show un paid orders
     public function unpaid()
     {
-        $orders = OrderResources::unpaid($this->request->user->customer_id); # get unpaid orders
+        $orders = OrderResources::get('unpaid', $this->request->user->customer_id); # get unpaid orders
 
         $credentials = [
             'success'       => true,

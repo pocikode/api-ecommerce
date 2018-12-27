@@ -65,7 +65,12 @@ class PaymentController extends Controller
         $data['order_id'] = $order->order_id;
         $data['to_bank']  = \App\Models\Bank::find($req->to_bank)->bank_name;
 
+        # create payment data
         $payment = Payment::create($data);
+
+        # update order status
+        $order->update(['status' => 'unconfirmed']);
+
         return response()->json([
             'success'   => true,
             'data'      => $payment,
