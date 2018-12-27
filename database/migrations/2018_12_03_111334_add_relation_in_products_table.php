@@ -23,11 +23,6 @@ class AddRelationInProductsTable extends Migration
                   ->references('sub_category_id')
                   ->on('sub_categories')
                   ->onUpdate('cascade');
-
-            $table->foreign('brand_id')
-                  ->references('brand_id')
-                  ->on('brands')
-                  ->onUpdate('cascade');
         });
     }
 
