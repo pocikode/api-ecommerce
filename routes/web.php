@@ -63,6 +63,7 @@ $router->post('product', 'ProductController@create');
 $router->put('product/{id}', 'ProductController@update');
 $router->delete('product/{id}', 'ProductController@delete');
 $router->post('product/upload-image', 'ProductController@uploadImage');
+$router->post('product/upload-sheet', 'ProductController@import');
 
 /**
  * Province, City and Onkir, Courier
@@ -129,3 +130,5 @@ $router->get('payment/unconfirmed', 'Admin\PaymentController@unconfirmed'); # ad
 
 
 $router->get('count', 'Admin\CountController@count');
+
+$router->post('sheet', 'SpreadsheetTestController@import');

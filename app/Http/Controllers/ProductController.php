@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\SubCategory;
 use Cloudinary\Uploader;
+use PhpOffice\PhpSpreadsheet\Reader;
 
 class ProductController extends Controller
 {
@@ -86,19 +87,18 @@ class ProductController extends Controller
         $subcategory = SubCategory::find($req->sub_category_id);
 
         $data = Product::create([
-            'code'  => $req->code,
-            'name'  => $req->name,
-            'category_id' => $req->category_id,
-            'category_name' => $category->name,
-            'sub_category_id' => $req->sub_category_id,
+            'code'              => $req->code,
+            'name'              => $req->name,
+            'category_id'       => $req->category_id,
+            'category_name'     => $category->name,
+            'sub_category_id'   => $req->sub_category_id,
             'sub_category_name' => $subcategory->name,
-            'price' => $req->price,
-            'weight'=> $req->weight,
-            'image' => $req->image,
-            'description' => $req->description,
-            // 'sizes' => $this->createSizes($req->size, $req->stock),
-            'sizes' => json_encode($req->size),
-            'stocks'=> json_encode($req->stock),
+            'price'             => $req->price,
+            'weight'            => $req->weight,
+            'image'             => $req->image,
+            'description'       => $req->description,
+            'sizes'             => json_encode($req->size),
+            'stocks'            => json_encode($req->stock),
         ]);
 
         $data->sizes = json_decode($data->sizes);
@@ -149,18 +149,18 @@ class ProductController extends Controller
         $subcategory = SubCategory::find($req->sub_category_id);
 
         $update = $product->update([
-            'code' => $req->code,
-            'name' => $req->name,
-            'category_id' => $req->category_id,
-            'category_name' => $category->name,
-            'sub_category_id' => $req->sub_category_id,
+            'code'              => $req->code,
+            'name'              => $req->name,
+            'category_id'       => $req->category_id,
+            'category_name'     => $category->name,
+            'sub_category_id'   => $req->sub_category_id,
             'sub_category_name' => $subcategory->name,
-            'price' => $req->price,
-            'weight' => $req->weight,
-            'image' => $req->image,
-            'description' => $req->description,
-            'sizes' => json_encode($req->size),
-            'stocks'=> json_encode($req->stock),
+            'price'             => $req->price,
+            'weight'            => $req->weight,
+            'image'             => $req->image,
+            'description'       => $req->description,
+            'sizes'             => json_encode($req->size),
+            'stocks'            => json_encode($req->stock),
         ]);
 
         return response()->json([
@@ -191,28 +191,63 @@ class ProductController extends Controller
     private function validateForm(Request $req)
     {
         $this->validate($req, [
-            'code' => 'required|max:100',
-            'name' => 'required|max:100',
-            'category_id' => 'integer|required',
-            'sub_category_id' => 'integer|required',
-            'price' => 'integer|required',
-            'weight'=> 'integer|required',
-            'image' => 'required|string',
-            'description' => 'required',
-            'size'  => 'required|array',
-            'stock' => 'required|array',
+            'code'              => 'required|max:100',
+            'name'              => 'required|max:100',
+            'category_id'       => 'integer|required',
+            'sub_category_id'   => 'integer|required',
+            'price'             => 'integer|required',
+            'weight'            => 'integer|required',
+            'image'             => 'required|string',
+            'description'       => 'required',
+            'size'              => 'required|array',
+            'stock'             => 'required|array',
         ]);
     }
 
-    # create sizes from size and stock
-    private function createSizes(array $size, array $stock)
+    # upload from excel
+    public function import(Request $req)
     {
-        $sizes = [];
-
-        for ($i = 0; $i < min(count($size), count($stock)); $i++) {
-            $sizes[$size[$i]] = $stock[$i];
+        # validate form 
+        $this->validate($req, [
+            'file' => 'required|file|mimes:xls,xlsx'
+        ]);
+        
+        # get file extension
+        $type = $req->file->getClientOriginalExtension();
+        if ($type == 'xlsx') {
+            $reader = new Reader\Xlsx();
+        } elseif ($type == 'xls') {
+            $reader = new Reader\Xls();
         }
 
-        return json_encode($sizes, JSON_UNESCAPED_SLASHES);
+        # load file
+        $spreadsheet = $reader->load($req->file);
+
+        # convert to array
+        $data = $spreadsheet->getActiveSheet()->toArray();
+
+        for ($i=1; $i < count($data); $i++) { 
+            $insert = [
+                'code'              => $data[$i][0],
+                'name'              => $data[$i][1],
+                'category_id'       => $data[$i][2],
+                'category_name'     => Category::find($data[$i][2])->name,
+                'sub_category_id'   => $data[$i][3],
+                'sub_category_name' => SubCategory::find($data[$i][3])->name,
+                'price'             => $data[$i][4],
+                'weight'            => $data[$i][5],
+                'image'             => $data[$i][6],
+                'description'       => $data[$i][7],
+                'sizes'             => $data[$i][8],
+                'stocks'            => $data[$i][9],
+            ];
+
+            Product::insert($insert);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data uploaded!'
+        ]);
     }
 }

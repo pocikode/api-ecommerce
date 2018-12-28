@@ -6,12 +6,13 @@
     "type": "project",
     "require": {
         "php": ">=7.1.3",
+        "cloudinary/cloudinary_php": "dev-master",
         "firebase/php-jwt": "^5.0",
         "laravel/lumen-framework": "5.7.*",
         "league/fractal": "^0.17.0",
+        "phpoffice/phpspreadsheet": "^1.5",
         "steevenz/rajaongkir": "^2.2",
-        "vlucas/phpdotenv": "~2.2",
-        "cloudinary/cloudinary_php": "dev-master"
+        "vlucas/phpdotenv": "~2.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
