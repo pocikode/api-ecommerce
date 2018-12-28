@@ -33,7 +33,7 @@ class OrderController extends Controller
     # show waiting confirm orders
     public function waitingConfirm()
     {
-        $orders = OrderResources::unconfirmed($this->request->user->customer_id);
+        $orders = OrderResources::get('unconfirmed', $this->request->user->customer_id);
 
         $credentials = [
             'success'       => true,
