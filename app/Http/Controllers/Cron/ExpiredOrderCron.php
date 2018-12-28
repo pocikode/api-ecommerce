@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\DB;
 
 class ExpiredOrderCron extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('cron');
+    }
+
     # delete expired order and update stock product
     public function execute()
     {
