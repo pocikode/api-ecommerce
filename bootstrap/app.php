@@ -116,4 +116,11 @@ $app->router->group([
     require __DIR__.'/../routes/web.php';
 });
 
+$app->router->group([
+    'prefix'    => 'cron',
+    'namespace' => 'App\Http\Controllers\Cron',
+], function ($router) {
+    require __DIR__.'/../routes/cron.php';
+});
+
 return $app;
