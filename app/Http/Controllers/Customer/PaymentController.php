@@ -21,9 +21,7 @@ class PaymentController extends Controller
         $this->validate($req, [
             'invoice'       => 'string|required',
             'to_bank'       => 'integer|required',
-            'bank_name'     => 'string|required',
             'account_name'  => 'string|required',
-            'account_number'=> 'integer|required',
             'amount'        => 'integer|required',
             'date'          => 'date|required',
         ]);

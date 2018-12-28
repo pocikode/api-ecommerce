@@ -19,5 +19,12 @@ class CustomersTableSeeder extends Seeder
             'email' => 'aguzsupriyatna7@gmail.com',
             'password'  => Hash::make('sangatsuu')
         ]);
+
+        Customer::create([
+            'name' => 'Hikki',
+            'phone' => '080989999',
+            'email' => 'hikki@g.com',
+            'password' => Hash::make('hikigaya')
+        ]);
     }
 }

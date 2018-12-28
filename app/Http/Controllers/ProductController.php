@@ -24,7 +24,7 @@ class ProductController extends Controller
     # show all product
     public function index()
     {
-        $products = Product::where('status', true)->get()->all();
+        $products = Product::where('status', true)->paginate(10);
 
         # encode size & stocks
         $dummyProd = [];

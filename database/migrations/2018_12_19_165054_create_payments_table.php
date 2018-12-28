@@ -19,9 +19,7 @@ class CreatePaymentsTable extends Migration
             $table->unsignedInteger('order_id');
             $table->string('invoice')->unique();
             $table->string('to_bank');
-            $table->string('bank_name');
             $table->string('account_name');
-            $table->string('account_number');
             $table->bigInteger('amount');
             $table->date('date');
             $table->enum('status', ['unconfirmed', 'confirmed'])->default('unconfirmed');
