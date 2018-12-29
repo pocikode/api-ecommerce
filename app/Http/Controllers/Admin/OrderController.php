@@ -62,6 +62,14 @@ class OrderController extends Controller
         return array_merge(['total' => count($orders['data'])], $orders);
     }
 
+    # show on shippinf
+    public function onShipping()
+    {
+        $orders = OrderResources::get('shipped');
+
+        return array_merge(['total' => count($orders['data'])], $orders);
+    }
+
     # confirm shipping order
     public function confirmShipping(Request $req)
     {
@@ -70,7 +78,7 @@ class OrderController extends Controller
             'awb'       => 'required|string',
         ]);
 
-        $order = Order::find($req->order_id);
+        $order = Order::find($req->get('order_id'));
         if (!$order) {
             return response()->json([
                 'success'   => false,

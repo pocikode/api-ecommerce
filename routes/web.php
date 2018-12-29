@@ -116,6 +116,7 @@ $router->get('order/history', 'Customer\OrderController@history');
 $router->get('order/unconfirmed', 'Admin\OrderController@unconfirmed');
 $router->get('order/confirm', 'Admin\OrderController@confirm');
 $router->get('order/waiting-shipping', 'Admin\OrderController@processed');
+$router->get('order/shipping', 'Admin\OrderController@onShipping');
 $router->post('order/confirm-shipping', 'Admin\OrderController@confirmShipping');
 $router->get('order/show-success', 'Admin\OrderController@success');
 
