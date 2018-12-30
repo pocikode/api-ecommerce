@@ -12,12 +12,16 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\ExampleEvent' => [
-            'App\Listeners\ExampleListener',
-        ],
-
+        # for customer register
         'App\Events\CustomerRegisterEvent' => [
             'App\Listeners\SendWelcomeMail',
         ],
+
+        ### ORDER ###
+        # checkout
+        'App\Events\Order\CheckoutEvent' => [
+            'App\Listeners\Order\SendInvoice',
+        ],
+
     ];
 }

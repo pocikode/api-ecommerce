@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Resources\CartResource;
 use Illuminate\Http\Request;
+use App\Events\Order\CheckoutEvent;
 
 class CheckoutController extends Controller
 {
@@ -75,6 +76,14 @@ class CheckoutController extends Controller
         # get shipping cost
         $shippingCost = \App\Resources\CourierResources::getShippingCost($shipping['city_id'], $cart['cart']['total_weight']);
 
+        if ($this->checkStock($cart['items']['data'])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'some product stock in cart is empty',
+                'data'    => $this->checkStock($cart['items']['data'])
+            ], 406);
+        }
+
         # generate invoice
         $invoice = $this->createInvoice();
 
@@ -97,8 +106,28 @@ class CheckoutController extends Controller
         $this->insertDetails($order->order_id, $cart['items']['data']); # insert to order details table
         $this->updateProducts($cart['items']['data']); # update product sizes
         $this->deleteCart($req->user->customer_id); # empty cart
+
+        event(new CheckoutEvent($order));
         
         return response()->json($order);
+    }
+
+    # check stock
+    private function checkStock($items)
+    {
+        $error = null;
+        foreach ($items as $item) {
+            $product = Product::find($item['product_id']);
+            if (!in_array($item['size'], json_decode($product->sizes))) {
+                $error[] = [
+                    'product_id'    => $item['product_id'],
+                    'size'          => $item['size'],
+                    'message'       => 'Product in this size is empty, change to another size!',
+                ];
+            }
+        }
+
+        return $error;
     }
 
     # create invoice
