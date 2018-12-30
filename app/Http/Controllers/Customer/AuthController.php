@@ -7,6 +7,7 @@ use Firebase\JWT\JWT;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Events\CustomerRegisterEvent;
 
 /**
  * Customer Auth
@@ -56,6 +57,8 @@ class AuthController extends Controller
             'email' => $req->email,
             'password' => Hash::make($req->password)
         ]);
+
+        event(new CustomerRegisterEvent($data));
 
         return response()->json([
             'success' => true,
