@@ -24,7 +24,11 @@ class ProfileController extends Controller
             ], 400);
         }
 
-        return response()->json($customer);
+        return response()->json([
+            'success' => true,
+            'message' => '',
+            'profile' => $customer
+        ]);
     }
 
     public function uploadImage(Request $req)
