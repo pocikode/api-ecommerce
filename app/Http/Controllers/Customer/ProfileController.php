@@ -7,6 +7,7 @@ use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Cloudinary\Uploader;
+use App\Models\Order;
 
 class ProfileController extends Controller
 {
@@ -27,8 +28,25 @@ class ProfileController extends Controller
         return response()->json([
             'success' => true,
             'message' => '',
-            'profile' => $customer
+            'profile' => $customer,
+            'orders'  => $this->orderStatus($req->user->customer_id)
         ]);
+    }
+
+    # order status
+    private function orderStatus($customerID)
+    {
+        $unpaid = Order::where('customer_id', $customerID)->where('status', 'unpaid')->count();
+        $unconfirmed = Order::where('customer_id', $customerID)->where('status', 'unconfirmed')->count();
+        $confirmed = Order::where('customer_id', $customerID)->where('status', 'confirmed')->count();
+        $shipped = Order::where('customer_id', $customerID)->where('status', 'shipped')->count();
+
+        return [
+            'waiting-payment' => $unpaid,
+            'waiting-confirm' => $unconfirmed,
+            'onprocess'       => $confirmed,
+            'onshipping'      => $shipped
+        ];
     }
 
     public function uploadImage(Request $req)

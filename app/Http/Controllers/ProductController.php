@@ -24,7 +24,11 @@ class ProductController extends Controller
     # show all product
     public function index()
     {
-        $products = Product::where('status', true)->paginate(10);
+        if (isset($_GET['search'])) {
+            $products = Product::where('name', 'like', "%{$_GET['search']}%")->where('status', true)->get();
+        } else {
+            $products = Product::where('status', true)->get();
+        }
 
         # encode size & stocks
         $dummyProd = [];
