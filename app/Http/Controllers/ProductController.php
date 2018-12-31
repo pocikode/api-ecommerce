@@ -25,7 +25,11 @@ class ProductController extends Controller
     public function index()
     {
         if (isset($_GET['search'])) {
-            $products = Product::where('name', 'like', "%{$_GET['search']}%")->where('status', true)->get();
+            $products = \DB::table('products')->where('name', 'like', "%{$_GET['search']}%")
+                                               ->orWhere('name', 'like', "%". strtoupper($_GET['search']) ."%")
+                                               ->orWhere('name', 'like', "%". strtolower($_GET['search']) ."%")
+                                               ->orWhere('name', 'like', "%". ucwords($_GET['search']) ."%")
+                                               ->where('status', true)->get();
         } else {
             $products = Product::where('status', true)->get();
         }
