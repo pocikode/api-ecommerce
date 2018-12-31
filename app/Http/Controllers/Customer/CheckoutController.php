@@ -107,7 +107,7 @@ class CheckoutController extends Controller
         $this->updateProducts($cart['items']['data']); # update product sizes
         $this->deleteCart($req->user->customer_id); # empty cart
 
-        event(new CheckoutEvent($order));
+        // event(new CheckoutEvent($order));
         
         return response()->json($order);
     }
