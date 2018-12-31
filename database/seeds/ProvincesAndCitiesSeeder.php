@@ -42,7 +42,7 @@ class ProvincesAndCitiesSeeder extends Seeder
                 'city_id'   => $city['city_id'],
                 'province_id'=> $city['province_id'],
                 'province'  => $city['province'],
-                'city_name' => $city['city_name']
+                'city_name' => $city['type'] .' '. $city['city_name']
             ]);
         }
     }

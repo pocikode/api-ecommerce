@@ -63,7 +63,7 @@
 					<td><b>Batas Waktu Pembayaran</b></td>
 				</tr>
 				<tr>
-					<td style="width: 60%">Rp {{ $order->total_payment }}</td>
+					<td style="width: 60%">Rp {{ number_format($order->total_payment, 0, ',', '.') }}</td>
 					<td>{{ $dueDate }}</td>
 				</tr>
 			</table>
@@ -94,21 +94,21 @@
 					@foreach ($order->details()->get() as $item)
 					<tr>
 						<td style="width: 60%">{{ $item->product_name }} (Size {{ $item->size }})</td>
-						<td class="align-right">Rp {{ $item->price }}</td>
+						<td class="align-right">Rp {{ number_format($item->price, 0, ',', '.') }}</td>
 					</tr>
 					@endforeach
 				</table>
 				<table>
 					<tr>
 						<td style="width: 60%">Ongkos Kirim</td>
-						<td class="align-right">Rp {{ $order->shipping_cost }}</td>
+						<td class="align-right">Rp {{ number_format($order->shipping_cost, 0, ',', '.') }}</td>
 					</tr>
 				</table>
 				<hr class="line">
 				<table>
 					<tr style="border-top: 1px solid #e7e7e7">
 						<td>Total Pembayaran</td>
-						<td class="align-right">Rp {{ $order->total_payment }}</td>
+						<td class="align-right">Rp {{ number_format($order->total_payment, 0, ',', '.') }}</td>
 					</tr>
 				</table>
 				<br>
