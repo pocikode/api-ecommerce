@@ -58,7 +58,7 @@ class AuthController extends Controller
             'password' => Hash::make($req->password)
         ]);
 
-        // event(new CustomerRegisterEvent($data));
+        event(new CustomerRegisterEvent($data));
 
         return response()->json([
             'success' => true,
