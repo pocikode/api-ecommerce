@@ -49,6 +49,23 @@ class AuthController extends Controller
             'email' => 'required|email|max:100',
             'password' => 'required|min:8|max:100'
         ]);
+
+        $checkEmail = Customer::where('email', $req->email)->count();
+        if ($checkEmail >= 1) {
+            return response()->json([
+                'email' => [
+                    "The email has already registered!"
+                ]
+            ]);
+        }
+        $checkPhone = Customer::where('phone', $req->phone)->count();
+        if ($checkPhone >= 1) {
+            return response()->json([
+                'phone' => [
+                    "The phone has already registered!"
+                ]
+            ]);
+        }
         
         # store data
         $data = Customer::Create([
