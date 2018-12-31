@@ -42,8 +42,8 @@ class ProfileController extends Controller
         $shipped = Order::where('customer_id', $customerID)->where('status', 'shipped')->count();
 
         return [
-            'waiting-payment' => $unpaid,
-            'waiting-confirm' => $unconfirmed,
+            'waiting_payment' => $unpaid,
+            'waiting_confirm' => $unconfirmed,
             'onprocess'       => $confirmed,
             'onshipping'      => $shipped
         ];
