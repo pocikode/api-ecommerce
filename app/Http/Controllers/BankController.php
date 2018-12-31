@@ -48,7 +48,9 @@ class BankController extends Controller
             'account_name'   => 'required'
         ]);
 
-        $bank = Bank::create($req->all());
+        $desc = $req->bank_name . ' a/n ' . $req->account_name . ' - ' . $req->account_number;
+
+        $bank = Bank::create(array_merge($req->all(), ['description' => $desc]));
         return response()->json([
             'success' => true,
             'message' => 'New Bank has been created!',

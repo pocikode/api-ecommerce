@@ -8,6 +8,6 @@ class Bank extends Model
 {
     protected $primaryKey = 'bank_id';
 
-    protected $fillable = ['bank_name', 'account_name', 'account_number'];
+    protected $fillable = ['bank_name', 'account_name', 'account_number', 'description'];
     protected $hidder = ['created_at', 'updated_at'];
 }
