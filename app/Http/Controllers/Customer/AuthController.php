@@ -53,6 +53,7 @@ class AuthController extends Controller
         $checkEmail = Customer::where('email', $req->email)->count();
         if ($checkEmail >= 1) {
             return response()->json([
+                'success' => 'false',
                 'email' => [
                     "The email has already registered!"
                 ]
@@ -61,6 +62,7 @@ class AuthController extends Controller
         $checkPhone = Customer::where('phone', $req->phone)->count();
         if ($checkPhone >= 1) {
             return response()->json([
+                'success' => 'false',
                 'phone' => [
                     "The phone has already registered!"
                 ]
