@@ -51,7 +51,7 @@ class SendInvoice extends Mailable
             'Sun'   => 'Minggu',
             'Mon'   => 'Senin',
             'Tue'   => 'Selasa',
-            'Web'   => 'Rabu',
+            'Wed'   => 'Rabu',
             'Thu'   => 'Kamis',
             'Fri'   => "Jum'at",
             'Sat'   => 'Sabtu'
