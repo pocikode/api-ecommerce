@@ -56,7 +56,7 @@ class AuthController extends Controller
                 'email' => [
                     "The email has already registered!"
                 ]
-            ]);
+                ], 406);
         }
         $checkPhone = Customer::where('phone', $req->phone)->count();
         if ($checkPhone >= 1) {
@@ -64,7 +64,7 @@ class AuthController extends Controller
                 'phone' => [
                     "The phone has already registered!"
                 ]
-            ]);
+                ], 406);
         }
         
         # store data
