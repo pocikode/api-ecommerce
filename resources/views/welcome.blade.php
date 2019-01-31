@@ -74,7 +74,6 @@
                 <div class="links m-b-md">
                     <a target="_blank" href="https://documenter.getpostman.com/view/5690031/RznBN1Dt">Documentation For Mobile</a>
                     <a target="_blank" href="https://documenter.getpostman.com/view/5690031/RznBN1Dq">Documentation For Web</a>
-                    <a target="_blank" href="https://github.com/pocikode/eCommerce-API">Github</a>
                 </div>
 
                 <div class="about">
