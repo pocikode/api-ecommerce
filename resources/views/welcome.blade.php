@@ -67,7 +67,7 @@
         <div class="flex-center position-ref full-height">
             <div class="content">
                 <div class="title m-b-md">
-                    Simple Chat API
+                    e-Commerce API
                 </div>
                 <p>Based on {{ $version }}</p>
 
