@@ -6,6 +6,11 @@
 <a href="https://api-simple-chat.herokuapp.com"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
+### Features
+- Integrated with third party API (RajaOngkir)
+- Image Upload to CDN (Cloudinary)
+- SMTP Mailgun
+
 ### Requirements
 -   PHP >= 7.1.3
 -   Composer
